@@ -68,27 +68,19 @@ function Header() {
 }
 
 function Menu() {
+  const pizza = pizzaData
+
+
   return (
     <main className="menu">
-      <h2>Our Menu</h2>
+      <h2>Our Menu 👍 </h2>
      
-      <Pizza 
-        name="Focaccia"
-        ingredients="Bread with italian olive oil and rosemary"
-        price={6}
-        photoName="pizzas/focaccia.jpg"
-        soldOut={false}
-      />
-
-       <Pizza 
-       name="Pizza Spinaci"
-       ingredients="Tomato, mozarella, spinach, and ricotta cheese"
-       price={12}
-       photoName="pizzas/spinaci.jpg"
-       soldOut={false}
-      />
-
-
+      <ul className='pizzas'>
+        {pizza.map((pizza)=>(
+      <Pizza pizzaObj={pizza} key={pizza.name} />
+     ))
+     }
+      </ul>
       
     </main>
   );
@@ -97,14 +89,14 @@ function Menu() {
 //another function
 function Pizza(props) {
   return (
-    <div className="pizza">
-      <img src={props.photoName} alt={props.name} />
+    <li className="pizza">
+      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price +3}</span>
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients}</p>
+        <span>{props.pizzaObj.price +3}</span>
       </div>
-    </div>
+    </li>
   );
 }
 
@@ -115,7 +107,14 @@ function Footer() {
   const isOpen = hour >= openHour && hour <= closeHour;
   return (
     <footer className="footer">
-      <p>{new Date().toLocaleTimeString()}.... we are {isOpen ? 'open' : 'closed'}!!</p>
+     {isOpen && 
+     <div className='order'>
+      <p>
+      We're open until {closeHour}:00 GMT+1. Come visit us or order online.
+      </p>
+      <button className='btn'>Order Now</button>
+     </div>}
+     
     </footer>
   );
 }
