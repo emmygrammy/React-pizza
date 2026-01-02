@@ -68,33 +68,46 @@ function Header() {
 }
 
 function Menu() {
-  const pizza = pizzaData
+  const pizza =pizzaData
+  const numPizza = pizza.length;
 
-
+ 
   return (
     <main className="menu">
       <h2>Our Menu 👍 </h2>
      
-      <ul className='pizzas'>
+     {numPizza > 0 ?
+     <> 
+      <p>Authentic Italian cuisine.{numPizza} creative dishes to choose from. All from our stone oven, all organic, all delicious!
+      </p>
+     (<ul className='pizzas'>
         {pizza.map((pizza)=>(
       <Pizza pizzaObj={pizza} key={pizza.name} />
      ))
      }
-      </ul>
+      </ul>) 
+      </>:(
+        <p>
+          we're still working on menu. please come back later.
+      </p>)
+     }
+      
       
     </main>
   );
 }
 
 //another function
-function Pizza(props) {
+function Pizza({pizzaObj}) {
+// if (pizzaObj.soldOut) return null
   return (
-    <li className="pizza">
-      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+    <li className={"pizza" + (pizzaObj.soldOut ? ' sold-out' : '')}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
       <div>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span>{props.pizzaObj.price +3}</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        {!pizzaObj.soldOut && <span>{pizzaObj.price +3}</span>}
+        <span>{pizzaObj.soldOut ? 'Sold Out' : ''}</span>
       </div>
     </li>
   );
@@ -102,18 +115,24 @@ function Pizza(props) {
 
 function Footer() {
   const hour = new Date().getHours();
-  const openHour =12;
+  const openHour =10;
   const closeHour =22;
   const isOpen = hour >= openHour && hour <= closeHour;
+  
   return (
     <footer className="footer">
-     {isOpen && 
+
+     {isOpen?(
      <div className='order'>
       <p>
       We're open until {closeHour}:00 GMT+1. Come visit us or order online.
       </p>
       <button className='btn'>Order Now</button>
-     </div>}
+     </div>):(
+      <span>
+        We're closed. Please come back between {openHour}:00 GMT+1 and {closeHour}:00 GMT+1.
+      </span>
+     )}
      
     </footer>
   );
